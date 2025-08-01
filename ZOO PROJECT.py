@@ -1,0 +1,146 @@
+import random
+class Animal:
+    def __init__(self,name,age,energy_level):
+        self.name = name
+        self.age = age
+        self.energy_level = energy_level
+    def __str__(self):
+        return f'{self.name} age {self.age}' 
+class Animals:
+    def __init__(self):
+        self.all_animals = []
+    def show(self):
+        for animal in self.all_animals:
+            print(animal)
+class AquaAnimals:
+    def __init__(self):
+        self.aqua = []
+    def showaqua(self):
+        for animal in self.aqua:
+            print(animal)
+class Herbivores(Animal): 
+   def __init__(self,name,age,energy_level):
+        super().__init__(name,age,energy_level)
+   def __str__(self):
+        return f' {super().__str__()}'
+   def Grazing(self):
+        return "Chomp chomp"
+class Carnivores(Animal):
+   def __init__(self,name,age,energy_level):
+        super().__init__(name,age,energy_level)
+        
+   def __str__(self):
+        return f' {super().__str__()}'
+   def Hunting(self):
+       return "chunk chunk"
+class Visitors:
+    def __init__(self, visitor_name, food):
+        self.visitor_name = visitor_name
+        self.food = food
+    def feed_animals(self, animal_list):      
+        for animal in animal_list:
+            if animal.energy_level < 50:
+                if isinstance(animal, Herbivores):
+                 before = animal.energy_level
+                 animal.energy_level += 20
+                 after = animal.energy_level
+                 print(f"{self.visitor_name} feeded {self.food} to {animal.name}.  Energy increased  {before} → {after}")
+                 return
+        
+def main():
+    my_animals = Animals()
+    animal_list = [
+        Carnivores('Lion', 12, 40),
+        Carnivores('Tiger', 10, 80),
+        Carnivores('Hyena', 6, 20),
+        Carnivores('Bear', 7, 30),
+        Carnivores('Fox', 7, 80),
+        Carnivores('Cheetah', 9, 60),
+        Carnivores('Leapord', 7, 30),
+        Herbivores('Kangaroo', 14, 40),
+        Herbivores('Koala', 7, 20),
+        Herbivores('Rhino', 20, 60),
+        Herbivores('Elephant', 19, 75),
+        Herbivores('Deer', 4, 25),
+        Herbivores('Horse', 8, 65),
+        Herbivores('Giraffe', 4, 35),
+        Herbivores('Hippo', 4, 35),
+    ]
+    my_animals.all_animals.extend(animal_list)
+    my_aqua = AquaAnimals()
+    aqua_animals = ["Walrus", "Sea Lion", "Seal", "Dolphin", "Beluga Whale", "Orca"]
+    my_aqua.aqua.extend(aqua_animals)  
+    print('\n--Hi welcome to the Zoo---')
+    while True:
+        print("\n---Zoo Menu---")
+        print("1. View Land Animals")
+        print("2. View Water Animal ")
+        print("3. Animal Feeding")
+        print("4. Animal Activities")
+        print("5. Exit")
+        choice = input("Choose your option: ")
+        if choice == '1':
+            print("\n---Animals in the Zoo---")
+            my_animals.show()
+            for animal in animal_list:
+                if animal.energy_level < 30:
+                   print(f"\n Alert: \n {animal.name} Energy level is {animal.energy_level} need food ")
+        elif choice == '2':
+            print("\n---Water Animals in the Zoo---")
+            my_aqua.showaqua()
+            interact = input("\n Do you want to interact with a water animal? (y/n): ").lower()
+            if interact == 'y':
+              play_ani = random.choice(aqua_animals)
+              print(f"\n You can interact with the {play_ani} !!!")
+            elif interact == 'n':
+              print("You explore other activities in the Zoo.")
+            else:
+              print("Invalid input.")
+        elif choice == '3':
+            print("\n--- Animals Being Fed by Other Visitors ---")
+            visitor_list = [
+                Visitors('Alex', 'fruits'),
+                Visitors('Sam', 'grass'),
+                Visitors('Liza', 'grass'),
+                Visitors('Bob', 'fruit'),
+                Visitors('Alev', 'fruit'),
+                Visitors('Balu', 'fruit'),
+                Visitors('Caly', 'fruit'),
+                Visitors('Maya', 'fruit')
+            ]
+            for visitor in visitor_list:
+                visitor.feed_animals(animal_list)  
+           
+            feed = input("\n Do you like to feed a animal? (y/n): ").lower()
+            if feed == 'y':
+                    herbivores = [a for a in animal_list if isinstance(a, Herbivores)]
+                    for animal in animal_list:
+                     if animal.energy_level <30:
+                      feed_ani = random.choice(herbivores)
+                      print(f"\n You can feed the {feed_ani} !!!")
+            elif feed == 'n':
+                    print("You explore other activities in the Zoo.")
+            else:
+                    print("Invalid input.")
+        elif choice == '4':
+         print("\n--- Animal Activities ---")
+         herbivores = [a for a in animal_list if isinstance(a, Herbivores)] 
+         for animal in animal_list:
+          if animal.energy_level < 40:
+            if isinstance(animal, Carnivores):
+                prey_ani = random.choice(herbivores)
+                if random.random() > 0.4:
+                 animal.energy_level += 20
+                 print(f"{animal.name} hunted {prey_ani.name} {animal.Hunting()} !!! Energy increased to {animal.energy_level}")                          
+                else:print(f"{animal.name} tried to hunt {prey_ani.name} but failed.")
+            elif isinstance(animal, Herbivores):
+                print(f"{animal.name} is grazing  {animal.Grazing()} !!! Energy increased to {animal.energy_level}")
+         else: print(f"{animal.name}  is playing.")            
+        elif choice == '5':
+            print("Thanks for visiting the Zoo!") 
+        else: print("Invalid choice... You can try again.")
+main()
+
+
+
+
